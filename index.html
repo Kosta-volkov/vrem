@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Калькулятор времени</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        label, input, button {
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор времени</h1>
+        <label for="your-gmt">Ваш часовой пояс (GMT):</label>
+        <select id="your-gmt">
+            <option value="-12">GMT-12</option>
+            <option value="-11">GMT-11</option>
+            <option value="-10">GMT-10</option>
+            <option value="-9">GMT-9</option>
+            <option value="-8">GMT-8</option>
+            <option value="-7">GMT-7</option>
+            <option value="-6">GMT-6</option>
+            <option value="-5">GMT-5</option>
+            <option value="-4">GMT-4</option>
+            <option value="-3">GMT-3</option>
+            <option value="-2">GMT-2</option>
+            <option value="-1">GMT-1</option>
+            <option value="0" selected>GMT+0</option>
+            <option value="1">GMT+1</option>
+            <option value="2">GMT+2</option>
+            <option value="3">GMT+3</option>
+            <option value="4">GMT+4</option>
+            <option value="5">GMT+5</option>
+            <option value="6">GMT+6</option>
+            <option value="7">GMT+7</option>
+            <option value="8">GMT+8</option>
+            <option value="9">GMT+9</option>
+            <option value="10">GMT+10</option>
+            <option value="11">GMT+11</option>
+            <option value="12">GMT+12</option>
+        </select>
+
+        <label for="current-time">Текущее точное время (Ваш GMT):</label>
+        <h2 id="current-time">--:--:--</h2>
+
+        <label for="other-gmt">Другой часовой пояс (GMT):</label>
+        <select id="other-gmt">
+            <option value="-12">GMT-12</option>
+            <option value="-11">GMT-11</option>
+            <option value="-10">GMT-10</option>
+            <option value="-9">GMT-9</option>
+            <option value="-8">GMT-8</option>
+            <option value="-7">GMT-7</option>
+            <option value="-6">GMT-6</option>
+            <option value="-5">GMT-5</option>
+            <option value="-4">GMT-4</option>
+            <option value="-3">GMT-3</option>
+            <option value="-2">GMT-2</option>
+            <option value="-1">GMT-1</option>
+            <option value="0" selected>GMT+0</option>
+            <option value="1">GMT+1</option>
+            <option value="2">GMT+2</option>
+            <option value="3">GMT+3</option>
+            <option value="4">GMT+4</option>
+            <option value="5">GMT+5</option>
+            <option value="6">GMT+6</option>
+            <option value="7">GMT+7</option>
+            <option value="8">GMT+8</option>
+            <option value="9">GMT+9</option>
+            <option value="10">GMT+10</option>
+            <option value="11">GMT+11</option>
+            <option value="12">GMT+12</option>
+        </select>
+
+        <button onclick="showOtherTime()">Показать точное время</button>
+
+        <h2 id="result"></h2>
+    </div>
+
+    <script>
+        function updateCurrentTime() {
+            const yourGmt = parseInt(document.getElementById('your-gmt').value);
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const localTime = new Date(utc + yourGmt * 3600000);
+
+            const hours = localTime.getHours().toString().padStart(2, '0');
+            const minutes = localTime.getMinutes().toString().padStart(2, '0');
+            const seconds = localTime.getSeconds().toString().padStart(2, '0');
+
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateCurrentTime, 1000);
+
+        function showOtherTime() {
+            const yourGmt = parseInt(document.getElementById('your-gmt').value);
+            const otherGmt = parseInt(document.getElementById('other-gmt').value);
+
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const otherTime = new Date(utc + otherGmt * 3600000);
+            const hours = otherTime.getHours().toString().padStart(2, '0');
+            const minutes = otherTime.getMinutes().toString().padStart(2, '0');
+            const seconds = otherTime.getSeconds().toString().padStart(2, '0');
+
+            document.getElementById('result').textContent = `Точное время в другом часовом поясе: ${hours}:${minutes}:${seconds}`;
+
+            document.title = `Калькулятор времени — GMT${otherGmt >= 0 ? '+' : ''}${otherGmt} ${hours}:${minutes}:${seconds}`;
+        }
+    </script>
+</body>
+</html>
